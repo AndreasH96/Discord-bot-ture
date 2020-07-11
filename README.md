@@ -2,6 +2,7 @@
 
 En bot till kvasiföreningen Köpstopps egna Discord.
 
+
 ## Hur du använder den
 
 | Kommando | Utförande |
@@ -16,3 +17,18 @@ En bot till kvasiföreningen Köpstopps egna Discord.
 * CI/CD med Jenkins
 * Installera den på raspberry pi
 * Skapa fler kommandon
+
+
+## Installera
+
+Installera senaste python och pip.
+
+```
+pip install discord.py
+
+# Shitdows
+py -3 -m pip install -U discord.py
+```
+
+
+
