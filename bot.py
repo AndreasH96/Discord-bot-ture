@@ -40,20 +40,21 @@ async def isAdmin(member):
 if(platform.uname()[1]=="raspberrypi"):
     bot = commands.Bot(command_prefix="!", status=discord.Status.idle, activity=discord.Game(name="Arga ubåtsljud intesifieras..."))
 else:
-    bot = commands.Bot(command_prefix="l:", status=discord.Status.idle, activity=discord.Game(name="Arga ubåtsljud intesifieras..."))
+    bot = commands.Bot(command_prefix="!", status=discord.Status.idle, activity=discord.Game(name="Arga ubåtsljud intesifieras..."))
 
 
 @bot.event
 async def on_ready():
     print("Ready to go!")
     print(f"Serving: {len(bot.guilds)} guilds.")
-    await bot.change_presence(status=discord.Status.online, activity=discord.Game(name="Letar efter boken"))
+    await bot.change_presence(status=discord.Status.online, activity=discord.Game("Letar efter boken"))
     channel = bot.get_channel(IDs.get("ture-har-ordet"))
-    if(isLocal):
-        await channel.send(f"Jag har återvänt till staden!")
-    else:    
+    if(isLocal == False):
         await channel.send(f"Jag har återvänt till staden, min senaste ritning av den nya bron finner du här: https://github.com/AndreasH96/Discord-bot-ture/commit/{bot_version}")
 
+@bot.command()
+async def boken(ctx):
+    await ctx.channel.send("Ge mig boken!")
 
 #--------- TO START MASTER BOT --------------
 if(platform.uname()[1]=="raspberrypi"):
