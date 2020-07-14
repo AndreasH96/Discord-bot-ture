@@ -36,4 +36,4 @@ def idx():
 
 
 if __name__ == "__main__":
-    app.run("0.0.0.0", port=int(os.getenv("PORT", 5000)))
+    app.run("0.0.0.0", port=int(os.getenv("PORT", 8080)))
