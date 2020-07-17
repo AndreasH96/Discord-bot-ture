@@ -14,7 +14,10 @@ with open("/home/pi/Discord-bot-ture/config.json") as f:
     config = json.load(f)
 
 def get_commit(bytestring):
-    return str(bytestring).split(" ")[0].split("'")[1]
+    if(len(bytestring) > 0 and bytestring != None):
+        return str(bytestring).split(" ")[0].split("'")[1]
+    else:
+        return "0"
 
 def deploy(js):
     if js["repository"]["name"] not in config:
