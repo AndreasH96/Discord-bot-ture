@@ -10,7 +10,7 @@ from subprocess import check_output
 
 app = Flask(__name__, template_folder="")
 
-with open("config.json") as f:
+with open("/home/pi/Discord-bot-ture/config.json") as f:
     config = json.load(f)
 
 def get_commit(bytestring):
