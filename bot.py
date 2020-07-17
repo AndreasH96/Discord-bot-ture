@@ -58,7 +58,7 @@ async def on_ready():
         await channel.send(f"Jag har återvänt till staden, min senaste ritning av den nya bron finner du här: <https://github.com/AndreasH96/Discord-bot-ture/commit/{bot_version}>")
 
 @bot.command()
-async def boken1(ctx):
+async def boken(ctx):
     await ctx.channel.send("Ge mig boken!")
 
 @bot.command()
