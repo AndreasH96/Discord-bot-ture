@@ -55,10 +55,10 @@ async def on_ready():
     await bot.change_presence(status=discord.Status.online, activity=discord.Game("Letar efter boken"))
     channel = bot.get_channel(IDs.get("ture-har-ordet"))
     if(isLocal == False):
-        await channel.send(f"Jag har återvänt till staden, min senaste ritning av den nya bron finner du här: https://github.com/AndreasH96/Discord-bot-ture/commit/{bot_version}")
+        await channel.send(f"Jag har återvänt till staden, min senaste ritning av den nya bron finner du här: <https://github.com/AndreasH96/Discord-bot-ture/commit/{bot_version}>")
 
 @bot.command()
-async def boken(ctx):
+async def boken1(ctx):
     await ctx.channel.send("Ge mig boken!")
 
 @bot.command()
