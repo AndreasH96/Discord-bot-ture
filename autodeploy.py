@@ -21,12 +21,10 @@ def deploy(js):
         return "REPOSITORY NOT FOUND", 404
 
     p = config[js["repository"]["name"]]
-    subprocess.run(["git", "-C", "/home/pi/Discord-bot-ture/", "pull"], cwd=p["path"])
-    #subprocess.run(["systemctl", "restart", p["service"]])
-    # Fix this later
-    commit = 0
-    #commit = get_commit(check_output(["git", "-C", "/home/pi/Discord-bot-ture/", "log", "-1", "--oneline"]))
-    subprocess.run(["python3", "/home/pi/Discord-bot-ture/bot.py", "boken123", commit])
+    subprocess.run(["git", "pull"], cwd=p["path"])
+    subprocess.run(["systemctl", "restart", p["service"]])
+    commit = get_commit(check_output(["git", "log", "-1", "--oneline"], cwd=p["path"]))
+    subprocess.run(["python3", "bot.py", "boken123", commit], cwd=p["path"])
 
 
 @app.route("/", methods=["POST", "GET"])
