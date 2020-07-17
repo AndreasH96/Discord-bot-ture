@@ -14,10 +14,13 @@ En bot till kvasiföreningen Köpstopps egna Discord.
 
 * ~~Lägga till botten till servern~~
 * ~~Kryptera OAuth nyckeln till botten så den inte ligger publikt på github~~
-* CI/CD med Jenkins
-* Installera den på raspberry pi
+* ~~CI/CD med Jenkins~~
+	* ~~Implementerat med eget script och ngrok~~
+* ~~Installera den på raspberry pi~~
+* ~~Skapa en lokal och en "live" version av Ture~~
 * Skapa fler kommandon
-* Skapa en lokal och en "live" version av Ture
+
+
 
 ## Installera
 
