@@ -15,7 +15,7 @@ En bot till kvasiföreningen Köpstopps egna Discord.
 * ~~Lägga till botten till servern~~
 * ~~Kryptera OAuth nyckeln till botten så den inte ligger publikt på github~~
 * ~~CI/CD med Jenkins~~
-	* ~~Implementerat med eget script och ngrok~~
+	* ~~Extern tunnel via ngrok~~
 * ~~Installera den på raspberry pi~~
 * ~~Skapa en lokal och en "live" version av Ture~~
 * Skapa fler kommandon

@@ -126,7 +126,7 @@ async def help(ctx):
     ```
     """)
 #--------- TO START MASTER BOT --------------
-if(platform.uname()[1]=="raspberrypi"):
+if(platform.uname()[1]=="raspberrypi" or platform.uname()[1]=="pi-hole"):
     bot_version = sys.argv[2]
     isLocal = False
     try:
