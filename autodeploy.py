@@ -24,7 +24,7 @@ def deploy(js):
     subprocess.run(["git", "pull"], cwd=p["path"])
     #subprocess.run(["systemctl", "restart", p["service"]])
     commit = get_commit(check_output(["git", "log", "-1", "--oneline"]))
-    subprocess.run(["python3", "bot.py", "boken123", commit])
+    subprocess.run(["python3", "/home/pi/Discord-bot-ture/bot.py", "boken123", commit])
 
 
 @app.route("/", methods=["POST", "GET"])
