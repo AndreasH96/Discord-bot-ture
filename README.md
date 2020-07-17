@@ -20,6 +20,7 @@ En bot till kvasiföreningen Köpstopps egna Discord.
 * ~~Skapa en lokal och en "live" version av Ture~~
 * Skapa fler kommandon
 	* WolframAlpha
+	* Snapsvisor
 
 
 ## Installera
