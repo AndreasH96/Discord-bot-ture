@@ -19,7 +19,7 @@ En bot till kvasiföreningen Köpstopps egna Discord.
 * ~~Installera den på raspberry pi~~
 * ~~Skapa en lokal och en "live" version av Ture~~
 * Skapa fler kommandon
-
+	* WolframAlpha
 
 
 ## Installera
