@@ -6,6 +6,7 @@ from discord.ext import commands
 import sys
 import asyncio
 from itertools import cycle
+import json
 
 encryptedKeys = {"live": "\r\x03I<?\x12\x01\t\x1e2)sk2\\\r&7'n5&S\x18\\91#X\x1e\x1f x\x14%Y/\x0eDo<jG+\x05a6\x07\x08\x08Yz\x08\x00w1\x08\x02\x0c\x0c\x03\x01u\x0c^#4@=\r/n!\x1a<\x157[7\x0e\x04x",
                 "local": "\r\x03I<?\x02\x05N\x1e>\x07ro5\x01\n&6\x05n6\x18[{d95=k4\x0f x\x14%Y(n;7<jG\x0c5p.\x17?&{C;\x17{D\x00ezN\x1e<\x1fvP5/}$k\r}\x1a\x05\x1a\x1c7^\x11 \x04x"}
@@ -15,6 +16,8 @@ IDs = {"serverID":467039975276281856, "ture-har-ordet":729990369525235772, "vmgu
 isLocal = True
 botVersion = 0.00
 
+with open('messages.json', encoding='utf-8') as json_data:
+    messages = json.load(json_data)
 # ------------------------------- Encryption -------------------------------
 
 def xor_strings(string, theKey):
@@ -30,10 +33,11 @@ def xor_strings(string, theKey):
 # ------------------- HELPER FUNCTIONS --------------------------
 async def isAdmin(member):
     admin = False
-    for role in member.roles:
-        if "admin" == role.name:
+    async def one_iteration(role):
+        if "Thanos" == role.name:
             admin = True
-    return admin
+    coros = [one_iteration(role) for role in member.roles]
+    await asyncio.gather(*coros)
 
 # ----------------- BOT COMMANDS ----------------------------
 
@@ -125,6 +129,30 @@ async def help(ctx):
     !skrotnisse 1      (1 är avsnitt 1 osv)
     ```
     """)
+
+@bot.command()
+async def info_message_food(ctx):
+    member = ctx.message.author
+    if isAdmin(member):
+        channel = bot.get_channel(734866223744942160)
+        await channel.send(messages["info_message_food"]["message"])
+
+@bot.event
+async def on_raw_reaction_add(payload):
+    channels = [727220856937513031, 734866336404209665]
+    if(payload.message_id == 734888243744473208):
+        member = bot.get_user(payload.user_id)
+        if(str(payload.emoji) == "✅"):
+            for channelID in channels:
+                channel = bot.get_channel(channelID)
+                await channel.set_permissions(member, read_messages=True, send_messages=True, manage_messages=True, embed_links=True, attach_files=True, mention_everyone=True, add_reactions=True)
+                #await member.create_dm()
+                #await member.send(f"Thanks for accepting the rules of this server. You will now get a URL to authenticate yourself against.\nTo authenticate open this website: https://odethh.se/register/?ID={secret}\nThis link will only work one time. If you fail for some reason you will have to press the :white_check_mark: in #welcome again. Once you're done with this you will have access to your classes.")
+        else:
+            channel = bot.get_channel(payload.channel_id)
+            async for elem in channel.history():
+                await elem.remove_reaction(payload.emoji,member)
+
 #--------- TO START MASTER BOT --------------
 if(platform.uname()[1]=="raspberrypi" or platform.uname()[1]=="pi-hole"):
     bot_version = sys.argv[2]
