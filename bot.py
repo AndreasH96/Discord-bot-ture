@@ -152,7 +152,8 @@ async def on_raw_reaction_add(payload):
             for channelID in channels:
                 channel = bot.get_channel(channelID)
                 await channel.set_permissions(member, read_messages=True, send_messages=True, manage_messages=True, embed_links=True, attach_files=True, mention_everyone=True, add_reactions=True)
-            else:
+                
+        else:
             channel = bot.get_channel(payload.channel_id)
             async for elem in channel.history():
                 await elem.remove_reaction(payload.emoji,member)
