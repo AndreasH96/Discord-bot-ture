@@ -28,7 +28,6 @@ def deploy(js):
     subprocess.run(["git", "pull"], cwd=p["path"])
     #subprocess.run(["sudo", "systemctl", "restart", p["service"]])
     commit = get_commit(check_output(["git", "log", "-1", "--oneline"], cwd=p["path"]))
-    time.sleep(5)
     subprocess.run(["python3", "bot.py", "boken123", commit], cwd=p["path"])
 
 

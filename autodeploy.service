@@ -9,7 +9,8 @@ After=multi-user.target
 Type=idle
 User=pi
 Group=adm
-ExecStart=/usr/bin/python3 /home/pi/Discord-bot-ture/autodeploy.py
+ExecStartPre=/bin/bash /home/pi/Discord-bot-ture/env/bin/activate 
+ExecStart=/home/pi/Discord-bot-ture/autodeploy.py
 
 [Install]
 
