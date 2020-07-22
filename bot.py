@@ -128,6 +128,11 @@ async def help(ctx):
     !boken
     !drinking_game
     !skrotnisse 1      (1 är avsnitt 1 osv)
+
+    ---------------------------------------
+
+    Admin kommandon
+    !pi [temp, load, disk, all]
     ```
     """)
 
