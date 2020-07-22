@@ -182,7 +182,7 @@ async def pi(ctx, *, args):
             load_avg = round(load.load_average*100)
             disk = DiskUsage()
             disk_usage = round(disk.usage)
-            await channel.send(f"Temp: {cpu.temperature}°C \n Load: {load_avg}% \n Disk: {disk_usage}%")
+            await channel.send(f"Temp: {cpu.temperature}°C \nLoad: {load_avg}% \nDisk: {disk_usage}%")
     else:
         await ctx.channel.send("Endast individer av exceptionell rank har tillgång till denna funktion!")
 
