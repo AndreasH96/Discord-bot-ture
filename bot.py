@@ -208,4 +208,3 @@ elif(sys.argv[1] == "01"):
         decryptedHost = 0
     except Exception as e:
         print(f"Fail local bot: {e}")
-
