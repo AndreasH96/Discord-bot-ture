@@ -16,7 +16,7 @@ with open("/home/pi/Discord-bot-ture/config.json") as f:
 
 def get_commit(bytestring):
     if(len(bytestring) > 0 and bytestring != None):
-        return str(bytestring).split(" ")[0].split("'")[1]
+        return str(bytestring).split(" ")[0].split('"')[1]
     else:
         return "0"
 
