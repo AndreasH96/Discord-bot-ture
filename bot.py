@@ -7,6 +7,7 @@ import sys
 import asyncio
 from itertools import cycle
 import json
+from gpiozero import CPUTemperature, LoadAverage, DiskUsage
 
 encryptedKeys = {"live": "\r\x03I<?\x12\x01\t\x1e2)sk2\\\r&7'n5&S\x18\\91#X\x1e\x1f x\x14%Y/\x0eDo<jG+\x05a6\x07\x08\x08Yz\x08\x00w1\x08\x02\x0c\x0c\x03\x01u\x0c^#4@=\r/n!\x1a<\x157[7\x0e\x04x",
                 "local": "\r\x03I<?\x02\x05N\x1e>\x07ro5\x01\n&6\x05n6\x18[{d95=k4\x0f x\x14%Y(n;7<jG\x0c5p.\x17?&{C;\x17{D\x00ezN\x1e<\x1fvP5/}$k\r}\x1a\x05\x1a\x1c7^\x11 \x04x"}
@@ -152,6 +153,34 @@ async def on_raw_reaction_add(payload):
             channel = bot.get_channel(payload.channel_id)
             async for elem in channel.history():
                 await elem.remove_reaction(payload.emoji,member)
+
+@bot.command()
+async def pi(ctx, *, args):
+    member = ctx.message.author
+    channel = bot.get_channel(IDs.get("ture-har-ordet"))
+    if(isAdmin(member)):
+        await ctx.channel.send("Informationen skickas i #ture-har-ordet")
+        if "temp" in args:
+            cpu = CPUTemperature()
+            cpu_temp = round(cpu.temperature)
+            await channel.send(f"Temp: {cpu_temp}°C")
+        if "load" in args:
+            load = LoadAverage()
+            load_avg = round(load.load_average*100)
+            await channel.send(f"Load: {load_avg}%")
+        if "disk" in args:
+            disk = DiskUsage()
+            disk_usage = round(disk.usage)
+            await channel.send(f"Disk: {disk_usage}%")
+        if "all" in args:
+            cpu = CPUTemperature()
+            load = LoadAverage()
+            load_avg = round(load.load_average*100)
+            disk = DiskUsage()
+            disk_usage = round(disk.usage)
+            await channel.send(f"Temp: {cpu.temperature}°C \n Load: {load_avg}% \n Disk: {disk_usage}%")
+    else:
+        await ctx.channel.send("Endast individer av exceptionell rank har tillgång till denna funktion!")
 
 #--------- TO START MASTER BOT --------------
 if(platform.uname()[1]=="raspberrypi" or platform.uname()[1]=="pi-hole"):
