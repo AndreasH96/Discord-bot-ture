@@ -152,9 +152,7 @@ async def on_raw_reaction_add(payload):
             for channelID in channels:
                 channel = bot.get_channel(channelID)
                 await channel.set_permissions(member, read_messages=True, send_messages=True, manage_messages=True, embed_links=True, attach_files=True, mention_everyone=True, add_reactions=True)
-                #await member.create_dm()
-                #await member.send(f"Thanks for accepting the rules of this server. You will now get a URL to authenticate yourself against.\nTo authenticate open this website: https://odethh.se/register/?ID={secret}\nThis link will only work one time. If you fail for some reason you will have to press the :white_check_mark: in #welcome again. Once you're done with this you will have access to your classes.")
-        else:
+            else:
             channel = bot.get_channel(payload.channel_id)
             async for elem in channel.history():
                 await elem.remove_reaction(payload.emoji,member)
