@@ -11,7 +11,7 @@ import time
 
 app = Flask(__name__, template_folder="")
 
-with open("/home/pi/Discord-bot-ture/config.json") as f:
+with open("/home/pi/Discord-bot-ture/config.json", encoding="utf-8") as f:
     config = json.load(f)
 
 def get_commit(bytestring):
@@ -43,6 +43,11 @@ def idx():
 
     return str(list(config.keys()))
 
+@app.route("/start", methods=["GET"])
+def start():
+    if request.method == "GET":
+        deploy(request.json)
+    return "Ture is now deployed"
 
 if __name__ == "__main__":
     app.run("0.0.0.0", port=int(os.getenv("PORT", 8080)))
