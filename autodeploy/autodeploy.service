@@ -1,0 +1,17 @@
+[Unit]
+
+Description=Autodeploy from Webhook
+
+After=multi-user.target
+
+[Service]
+
+Type=idle
+User=pi
+Group=adm
+ExecStartPre=/bin/bash /home/pi/Discord-bot-ture/env/bin/activate 
+ExecStart=/home/pi/Discord-bot-ture/autodeploy/autodeploy.py
+
+[Install]
+
+WantedBy=multi-user.target
