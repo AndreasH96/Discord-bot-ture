@@ -11,7 +11,7 @@ import time
 
 app = Flask(__name__, template_folder="")
 
-with open("/home/pi/Discord-bot-ture/config.json", encoding="utf-8") as f:
+with open("/home/pi/Discord-bot-ture/autodeploy/config.json", encoding="utf-8") as f:
     config = json.load(f)
 
 def get_commit(bytestring):
@@ -25,15 +25,21 @@ def get_commit(bytestring):
     else:
         return "0"
 
+def start_bot(path):
+    subprocess.run(["git", "pull"], cwd=path)
+    commit = get_commit(check_output(["git", "log", "-1", "--oneline"], cwd=path))
+    subprocess.run(["python3", "bot.py", "boken123", commit], cwd=path)
+
 def deploy(js):
     if js["repository"]["name"] not in config:
         return "REPOSITORY NOT FOUND", 404
 
     p = config[js["repository"]["name"]]
+    start_bot(p["path"])
     subprocess.run(["git", "pull"], cwd=p["path"])
-    #subprocess.run(["sudo", "systemctl", "restart", p["service"]])
-    commit = get_commit(check_output(["git", "log", "-1", "--oneline"], cwd=p["path"]))
-    subprocess.run(["python3", "bot.py", "boken123", commit], cwd=p["path"])
+    subprocess.run(["sudo", "systemctl", "restart", p["service"]])
+    #commit = get_commit(check_output(["git", "log", "-1", "--oneline"], cwd=p["path"]))
+    #subprocess.run(["python3", "bot.py", "boken123", commit], cwd=p["path"])
 
 
 @app.route("/", methods=["POST", "GET"])
@@ -46,7 +52,7 @@ def idx():
 @app.route("/start", methods=["GET"])
 def start():
     if request.method == "GET":
-        deploy(request.json)
+        start_bot(config["Discord-bot-ture"]["path"])
     return "Ture is now deployed"
 
 if __name__ == "__main__":
