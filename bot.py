@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import discord
 import platform
 import base64
