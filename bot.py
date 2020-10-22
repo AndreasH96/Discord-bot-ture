@@ -42,7 +42,7 @@ async def isAdmin(member):
 
 # ----------------- BOT COMMANDS ----------------------------
 
-if(platform.uname()[1]=="raspberrypi" or platform.uname()[1]=="pi-hole"):
+if(platform.uname()[1]=="raspberrypi" or platform.uname()[1]=="pi4-arch"):
     bot = commands.Bot(command_prefix="!", status=discord.Status.idle, activity=discord.Game(name="Arga ubåtsljud intesifieras..."))
 else:
     bot = commands.Bot(command_prefix="l:", status=discord.Status.idle, activity=discord.Game(name="Arga ubåtsljud intesifieras..."))
@@ -187,7 +187,7 @@ async def pi(ctx, *, args):
         await ctx.channel.send("Endast individer av exceptionell rank har tillgång till denna funktion!")
 
 #--------- TO START MASTER BOT --------------
-if(platform.uname()[1]=="raspberrypi" or platform.uname()[1]=="pi-hole"):
+if(platform.uname()[1]=="raspberrypi" or platform.uname()[1]=="pi4-arch"):
     bot_version = sys.argv[2]
     isLocal = False
     try:
