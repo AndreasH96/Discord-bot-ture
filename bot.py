@@ -14,7 +14,7 @@ from gpiozero import CPUTemperature, LoadAverage, DiskUsage
 encryptedKeys = {"live": "\r\x03I<?\x12\x01\t\x1e2)sk2\\\r&7'n5&S\x18\\91#X\x1e\x1f x\x14%Y/\x0eDo<jG+\x05a6\x07\x08\x08Yz\x08\x00w1\x08\x02\x0c\x0c\x03\x01u\x0c^#4@=\r/n!\x1a<\x157[7\x0e\x04x",
                 "local": "\r\x03I<?\x02\x05N\x1e>\x07ro5\x01\n&6\x05n6\x18[{d95=k4\x0f x\x14%Y(n;7<jG\x0c5p.\x17?&{C;\x17{D\x00ezN\x1e<\x1fvP5/}$k\r}\x1a\x05\x1a\x1c7^\x11 \x04x"}
 
-IDs = {"serverID":467039975276281856, "ture-har-ordet":729990369525235772, "vmguld-i-skitsnack":467039975276281858}
+IDs = {"serverID":467039975276281856, "ture-har-ordet":729990369525235772, "vmguld-i-skitsnack":467039975276281858, "bot-testing":768443897352683530}
 
 isLocal = True
 botVersion = 0.00
@@ -163,28 +163,30 @@ async def on_raw_reaction_add(payload):
 @bot.command()
 async def pi(ctx, *, args):
     member = ctx.message.author
-    channel = bot.get_channel(IDs.get("ture-har-ordet"))
+    channel = bot.get_channel(IDs.get("bot-testing"))
     if(isAdmin(member)):
-        await ctx.channel.send("Informationen skickas i #ture-har-ordet")
-        if "temp" in args:
+        await ctx.channel.send("Informationen skickas i #bot-testing")
+        if args == "temp":
             cpu = CPUTemperature()
             cpu_temp = round(cpu.temperature)
             await channel.send(f"Temp: {cpu_temp}°C")
-        if "load" in args:
+        elif args == "load":
             load = LoadAverage()
             load_avg = round(load.load_average*100)
             await channel.send(f"Load: {load_avg}%")
-        if "disk" in args:
+        elif args == "disk":
             disk = DiskUsage()
             disk_usage = round(disk.usage)
             await channel.send(f"Disk: {disk_usage}%")
-        if "all" in args:
+        elif args == "all":
             cpu = CPUTemperature()
             load = LoadAverage()
             load_avg = round(load.load_average*100)
             disk = DiskUsage()
             disk_usage = round(disk.usage)
             await channel.send(f"Temp: {cpu.temperature}°C \nLoad: {load_avg}% \nDisk: {disk_usage}%")
+        else:
+            await channel.send(f"Jag förstår inte argumentet: {args} \n Jag kan följande: [temp, load, disk, all]")
     else:
         await ctx.channel.send("Endast individer av exceptionell rank har tillgång till denna funktion!")
 
