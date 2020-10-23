@@ -18,7 +18,19 @@ if platform.uname()[4] == "aarch64":
 encryptedKeys = {"live": "\r\x03I<?\x12\x01\t\x1e2)sk2\\\r&7'n5&S\x18\\91#X\x1e\x1f x\x14%Y/\x0eDo<jG+\x05a6\x07\x08\x08Yz\x08\x00w1\x08\x02\x0c\x0c\x03\x01u\x0c^#4@=\r/n!\x1a<\x157[7\x0e\x04x",
                 "local": "\r\x03I<?\x02\x05N\x1e>\x07ro5\x01\n&6\x05n6\x18[{d95=k4\x0f x\x14%Y(n;7<jG\x0c5p.\x17?&{C;\x17{D\x00ezN\x1e<\x1fvP5/}$k\r}\x1a\x05\x1a\x1c7^\x11 \x04x"}
 
-IDs = {"serverID":467039975276281856, "ture-har-ordet":729990369525235772, "vmguld-i-skitsnack":467039975276281858, "bot-testing":768443897352683530}
+IDs = {"serverID":467039975276281856, \
+        "ture-har-ordet":729990369525235772, \
+        "vmguld-i-skitsnack":467039975276281858, \
+        "bot-testing":768443897352683530, \
+        "matkanalen":727220856937513031, \
+        "grogghörnan":734866336404209665, \
+        "information_mat": 734866223744942160, \
+        "köpstopp":769180472189911071, \
+        "role_Thanos":727146183822278697, \
+        "role_Köpstopp":727147167680036894, \
+        "role_GH":735083349097316352, \
+        "role_Familjen":763487940667244565, \
+        "role_ByggareBob":763487940667244565}
 
 isLocal = True
 botVersion = 0.00
@@ -139,6 +151,8 @@ async def help(ctx):
 
     Admin kommandon
     !pi [temp, load, disk, all]
+    !info_message_food
+    !info_message_kopstopp
     ```
     """)
 
@@ -146,23 +160,37 @@ async def help(ctx):
 async def info_message_food(ctx):
     member = ctx.message.author
     if isAdmin(member):
-        channel = bot.get_channel(734866223744942160)
+        channel = bot.get_channel(IDs.get("information_mat"))
         await channel.send(messages["info_message_food"]["message"])
 
 @bot.event
 async def on_raw_reaction_add(payload):
-    channels = [727220856937513031, 734866336404209665]
-    if(payload.message_id == 734888243744473208):
+    if(payload.message_id == 769172891702263828):
         member = bot.get_user(payload.user_id)
         if(str(payload.emoji) == "✅"):
-            for channelID in channels:
+            for channelID in [IDs.get("matkanalen"), IDs.get("grogghörnan")]:
                 channel = bot.get_channel(channelID)
-                await channel.set_permissions(member, read_messages=True, send_messages=True, manage_messages=True, embed_links=True, attach_files=True, mention_everyone=True, add_reactions=True)
-                
+                await channel.set_permissions(member, read_messages=True, send_messages=True, manage_messages=True, embed_links=True, attach_files=True, mention_everyone=True, add_reactions=True) 
         else:
             channel = bot.get_channel(payload.channel_id)
             async for elem in channel.history():
                 await elem.remove_reaction(payload.emoji,member)
+    elif(payload.message_id == 769181381875073085):
+        member = bot.get_user(payload.user_id)
+        if(str(payload.emoji) == "\U0001F986"):
+            member.add_roles(IDs.get("role_Köpstopp"))
+        elif(str(payload.emoji) == "🐦"):
+            member.add_roles("role_GH")
+        elif(str(payload.emoji) == "👪"):
+            member.add_roles("role_Familjen")
+
+@bot.command()
+async def info_message_kopstopp(ctx):
+    member = ctx.message.author
+    if isAdmin(member):
+        channel = bot.get_channel(IDs.get("köpstopp"))
+        await channel.send(messages["info_message_köpstopp"]["message"])
+
 
 @bot.command()
 async def pi(ctx, *, args):
@@ -184,11 +212,12 @@ async def pi(ctx, *, args):
             await channel.send(f"Disk: {disk_usage}%")
         elif args == "all":
             cpu = CPUTemperature()
+            cpu_temp = round(cpu.temperature)
             load = LoadAverage()
             load_avg = round(load.load_average*100)
             disk = DiskUsage()
             disk_usage = round(disk.usage)
-            await channel.send(f"Temp: {cpu.temperature}°C \nLoad: {load_avg}% \nDisk: {disk_usage}%")
+            await channel.send(f"Temp: {cpu_temp}°C \nLoad: {load_avg}% \nDisk: {disk_usage}%")
         else:
             await channel.send(f"Jag förstår inte argumentet: {args} \n Jag kan följande: [temp, load, disk, all]")
     else:
