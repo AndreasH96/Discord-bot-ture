@@ -18,7 +18,6 @@ En bot till kvasiföreningen Köpstopps egna Discord.
 | !info_message_kopstopp | Skriver välkomstmeddelandet i Köpstopp kanalen |
 
 
-
 ## Buggar och nya Features
 För att rapportera en bugg eller om du vill komma med förslag på en ny feature så skapa en issue och tagga den.
 

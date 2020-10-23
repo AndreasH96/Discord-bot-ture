@@ -1,0 +1,16 @@
+{
+    "snapsvisor": {
+        "visor": [ 
+            {
+
+                "visa": "***Åh va kul, nu ska vi sjunga!*** \n\nHelan går, \nsjung hopp faderallan lallan lej, \nhelan går, \nsjung hopp faderallan lej. \nOch den som inte helan tar, \nden heller inte halvan får, \nHelan gåååååååår, ***helan tages*** \nsjung hopp faderallan lej."
+            },
+            {
+                "visa": "***Åh va kul, nu ska vi sjunga!*** \n\nI havet finns det ål \n***skål!***"
+            },
+            { 
+                "visa": "***Åh va kul, nu ska vi sjunga!*** \n\nI skogen finns det älg \n***svälj!***"  
+            }    
+        ]
+    }
+}

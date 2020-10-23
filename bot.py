@@ -9,6 +9,10 @@ import sys
 import asyncio
 from itertools import cycle
 import json
+from gpiozero import CPUTemperature, LoadAverage, DiskUsage
+import http.client, urllib.request, urllib.parse, urllib.error, base64
+import os
+from random import randint
 
 if platform.uname()[4] == "aarch64":
     import os
@@ -222,6 +226,14 @@ async def pi(ctx, *, args):
             await channel.send(f"Jag förstår inte argumentet: {args} \n Jag kan följande: [temp, load, disk, all]")
     else:
         await ctx.channel.send("Endast individer av exceptionell rank har tillgång till denna funktion!")
+
+@bot.command()
+async def snapsvisa(ctx):
+    with open('snapsvisor.json', encoding='utf-8') as f:
+        data = json.load(f)
+        songs = data["snapsvisor"]["visor"]
+        random_song = randint(0, len(songs)-1)
+    await ctx.channel.send(songs[random_song]["visa"])
 
 #--------- TO START MASTER BOT --------------
 if(platform.uname()[1]=="raspberrypi" or platform.uname()[1]=="pi4-arch"):
