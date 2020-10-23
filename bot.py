@@ -179,7 +179,7 @@ async def on_raw_reaction_add(payload):
             channel = bot.get_channel(payload.channel_id)
             async for elem in channel.history():
                 await elem.remove_reaction(payload.emoji,member)
-    elif(payload.message_id == 769181381875073085):
+    elif(payload.message_id == 769218692948295721):
         member = bot.get_user(payload.user_id)
         if(str(payload.emoji) == "\U0001F986"):
             member.add_roles(IDs.get("role_Köpstopp"))
