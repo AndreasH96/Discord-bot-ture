@@ -14,6 +14,7 @@ En bot till kvasiföreningen Köpstopps egna Discord.
 | | Följande är admin kommandon. |
 | !pi [temp, load, disk, all] | Retunerar respektive status. |
 | !info_message_food | Skriver reglerna i matkanalen |
+| !snapsvisa | Skickar en slumpmässigt vald snapsvisa |
 
 
 ## Buggar och nya Features
