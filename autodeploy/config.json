@@ -1,6 +1,0 @@
-{
-	"Discord-bot-ture": {
-		"path": "/home/pi/Discord-bot-ture/",
-		"service": "autodeploy.service"
-	}
-}
