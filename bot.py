@@ -10,7 +10,7 @@ import asyncio
 from itertools import cycle
 import json
 
-if platform.uname()[5] == "aarch64":
+if platform.uname()[4] == "aarch64":
     import os
     os.environ['GPIOZERO_PIN_FACTORY'] = os.environ.get('GPIOZERO_PIN_FACTORY', 'mock')
     from gpiozero import CPUTemperature, LoadAverage, DiskUsage
