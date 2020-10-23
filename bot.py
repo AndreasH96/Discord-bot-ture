@@ -60,10 +60,13 @@ async def isAdmin(member):
 
 # ----------------- BOT COMMANDS ----------------------------
 
+intents = discord.Intents.default()  # All but the two privileged ones
+intents.members = True
+
 if(platform.uname()[1]=="raspberrypi" or platform.uname()[1]=="pi4-arch"):
-    bot = commands.Bot(command_prefix="!", status=discord.Status.idle, activity=discord.Game(name="Arga ubåtsljud intesifieras..."))
+    bot = commands.Bot(command_prefix="!", status=discord.Status.idle, activity=discord.Game(name="Arga ubåtsljud intesifieras..."), intents=intents)
 else:
-    bot = commands.Bot(command_prefix="l:", status=discord.Status.idle, activity=discord.Game(name="Arga ubåtsljud intesifieras..."))
+    bot = commands.Bot(command_prefix="l:", status=discord.Status.idle, activity=discord.Game(name="Arga ubåtsljud intesifieras..."), intents=intents)
 
 bot.remove_command("help")
 
@@ -165,24 +168,32 @@ async def info_message_food(ctx):
 
 @bot.event
 async def on_raw_reaction_add(payload):
+    guild = bot.get_guild(payload.guild_id)
+    rolesDict = {role.name : role for role in guild.roles}
+    member = guild.get_member(payload.user_id)
+    user = bot.get_user(payload.user_id)
     if(payload.message_id == 769172891702263828):
-        member = bot.get_user(payload.user_id)
         if(str(payload.emoji) == "✅"):
             for channelID in [IDs.get("matkanalen"), IDs.get("grogghörnan")]:
                 channel = bot.get_channel(channelID)
-                await channel.set_permissions(member, read_messages=True, send_messages=True, manage_messages=True, embed_links=True, attach_files=True, mention_everyone=True, add_reactions=True) 
+                await channel.set_permissions(user, read_messages=True, send_messages=True, manage_messages=True, embed_links=True, attach_files=True, mention_everyone=True, add_reactions=True) 
         else:
             channel = bot.get_channel(payload.channel_id)
             async for elem in channel.history():
                 await elem.remove_reaction(payload.emoji,member)
     elif(payload.message_id == 769218692948295721):
-        member = bot.get_user(payload.user_id)
+        for roleName in ["Köpstopp", "GH", "Familjen"]:
+            await member.remove_roles(rolesDict.get(roleName))
+            
         if(str(payload.emoji) == "\U0001F986"):
-            member.add_roles(IDs.get("role_Köpstopp"))
+            role = rolesDict.get("Köpstopp")
+            await member.add_roles(role)
         elif(str(payload.emoji) == "🐦"):
-            member.add_roles("role_GH")
+            role = rolesDict.get("GH")
+            await member.add_roles(role)
         elif(str(payload.emoji) == "👪"):
-            member.add_roles("role_Familjen")
+            role = rolesDict.get("Familjen")
+            await member.add_roles(role)
 
 @bot.command()
 async def info_message_kopstopp(ctx):
