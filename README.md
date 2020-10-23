@@ -7,39 +7,35 @@ En bot till kvasiföreningen Köpstopps egna Discord.
 
 | Kommando | Utförande |
 |----------|-----------|
-| !boken   | Ture frågar efter boken |
+| !help	   | Ture retunerar alla kommandon han kan. |
+| !boken   | Ture frågar efter boken. |
+| !drinking_game | Ture berättar reglerna för Skrotnisse Drinking-game. |
+| !skrotnisse x | Ture skickar länken till det avsnitt av Skrotnisse du ber om. |
+| | Följande är admin kommandon. |
+| !pi [temp, load, disk, all] | Retunerar respektive status. |
+| !info_message_food | Skriver reglerna i matkanalen |
 
 
-## Todo
-
-* ~~Lägga till botten till servern~~
-* ~~Kryptera OAuth nyckeln till botten så den inte ligger publikt på github~~
-* ~~CI/CD med Jenkins~~
-	* ~~Extern tunnel via ngrok~~
-* ~~Installera den på raspberry pi~~
-* ~~Skapa en lokal och en "live" version av Ture~~
-* Skapa fler kommandon
-	* WolframAlpha
-	* Snapsvisor
+## Buggar och nya Features
+För att rapportera en bugg eller om du vill komma med förslag på en ny feature så skapa en issue och tagga den.
 
 
 ## Installera
 
-Installera senaste python och pip.
+Installera senaste python och pip. Rekommenderar att köra python i en virtual environment, isf döp mappen där din venv ligger i till `env`. Alternativt att du lägger till namnet på mappen i `.gitignore`.
 
 ```
-pip install discord.py
+pip install -r requirements.txt
 
 # Shitdows
 py -3 -m pip install -U discord.py
 ```
 
 ## Hur du startar Ture
-Just nu finns det bara en lokal version av ture, men så fort den rullar på Raspberryn så kommer det finnas två eller flera.
-För att starta Ture skriver du följande:
+För att starta Ture lokalt skriver du följande:
 
 ` python bot.py 01 xxx `
 
-Där 01 betyder att det är bot#1, 02 är bot#2 osv. _xxx_ är lösenordet till Ture för att avkryptera nycklarna.
+Där 01 betyder att det är bot#1, 02 är bot#2 osv. _xxx_ är lösenordet till Ture för att avkryptera nycklarna. Just nu finns bara 01.
 
 
