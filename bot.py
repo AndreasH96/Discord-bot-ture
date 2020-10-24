@@ -13,12 +13,19 @@ import sys
 import asyncio
 from itertools import cycle
 import json
+<<<<<<< HEAD
 import wolframalpha
 import random
 import requests
 import pathlib
+=======
+from gpiozero import CPUTemperature, LoadAverage, DiskUsage
+import http.client, urllib.request, urllib.parse, urllib.error, base64
+import os
+from random import randint
+>>>>>>> d22f340fd3fbae058b7b745490f650cdf591882d
 
-if platform.uname()[5] == "aarch64":
+if platform.uname()[4] == "aarch64":
     import os
     os.environ['GPIOZERO_PIN_FACTORY'] = os.environ.get('GPIOZERO_PIN_FACTORY', 'mock')
     from gpiozero import CPUTemperature, LoadAverage, DiskUsage
@@ -26,12 +33,28 @@ if platform.uname()[5] == "aarch64":
 encryptedKeys = {"live": "\r\x03I<?\x12\x01\t\x1e2)sk2\\\r&7'n5&S\x18\\91#X\x1e\x1f x\x14%Y/\x0eDo<jG+\x05a6\x07\x08\x08Yz\x08\x00w1\x08\x02\x0c\x0c\x03\x01u\x0c^#4@=\r/n!\x1a<\x157[7\x0e\x04x",
                 "local": "\r\x03I<?\x02\x05N\x1e>\x07ro5\x01\n&6\x05n6\x18[{d95=k4\x0f x\x14%Y(n;7<jG\x0c5p.\x17?&{C;\x17{D\x00ezN\x1e<\x1fvP5/}$k\r}\x1a\x05\x1a\x1c7^\x11 \x04x"}
 
+<<<<<<< HEAD
 askTureMessages =["Hmm... den var klurig. Jag ska kolla upp detta i boken!","Kunskap är makt! Nu tar vi över världen. Vänta lite bara...",
                 "Jaha är du här och stör igen... Ja jag får väl kolla up det då.","Jag är stadsingenjör, jag kan en del saker. Vänta ska du få se!"]
 askTureInfoNotFoundMessages =["Ajaj Hasse detta hittade jag inget om i boken! Bättre lycka nästa gång.","Den där nedrans eremiten har tagit tillbaka boken, du får klara dig själv.",
                 "Rackarns bananer nu är det jag som får skämmas. Här står ingenting om din fråga.", "Vad förväntar du dig av mig!? Jag är bara en sketen bot skriven av några imbeciller."]
 
 IDs = {"serverID":467039975276281856, "ture-har-ordet":729990369525235772, "vmguld-i-skitsnack":467039975276281858, "bot-testing":768443897352683530}
+=======
+IDs = {"serverID":467039975276281856, \
+        "ture-har-ordet":729990369525235772, \
+        "vmguld-i-skitsnack":467039975276281858, \
+        "bot-testing":768443897352683530, \
+        "matkanalen":727220856937513031, \
+        "grogghörnan":734866336404209665, \
+        "information_mat": 734866223744942160, \
+        "köpstopp":769180472189911071, \
+        "role_Thanos":727146183822278697, \
+        "role_Köpstopp":727147167680036894, \
+        "role_GH":735083349097316352, \
+        "role_Familjen":763487940667244565, \
+        "role_ByggareBob":763487940667244565}
+>>>>>>> d22f340fd3fbae058b7b745490f650cdf591882d
 
 isLocal = True
 botVersion = 0.00
@@ -65,10 +88,13 @@ async def isAdmin(member):
 
 # ----------------- BOT COMMANDS ----------------------------
 
+intents = discord.Intents.default()  # All but the two privileged ones
+intents.members = True
+
 if(platform.uname()[1]=="raspberrypi" or platform.uname()[1]=="pi4-arch"):
-    bot = commands.Bot(command_prefix="!", status=discord.Status.idle, activity=discord.Game(name="Arga ubåtsljud intesifieras..."))
+    bot = commands.Bot(command_prefix="!", status=discord.Status.idle, activity=discord.Game(name="Arga ubåtsljud intesifieras..."), intents=intents)
 else:
-    bot = commands.Bot(command_prefix="l:", status=discord.Status.idle, activity=discord.Game(name="Arga ubåtsljud intesifieras..."))
+    bot = commands.Bot(command_prefix="l:", status=discord.Status.idle, activity=discord.Game(name="Arga ubåtsljud intesifieras..."), intents=intents)
 
 bot.remove_command("help")
 
@@ -226,6 +252,8 @@ async def help(ctx):
 
     Admin kommandon
     !pi [temp, load, disk, all]
+    !info_message_food
+    !info_message_kopstopp
     ```
     """)
 
@@ -233,23 +261,45 @@ async def help(ctx):
 async def info_message_food(ctx):
     member = ctx.message.author
     if isAdmin(member):
-        channel = bot.get_channel(734866223744942160)
+        channel = bot.get_channel(IDs.get("information_mat"))
         await channel.send(messages["info_message_food"]["message"])
 
 @bot.event
 async def on_raw_reaction_add(payload):
-    channels = [727220856937513031, 734866336404209665]
-    if(payload.message_id == 734888243744473208):
-        member = bot.get_user(payload.user_id)
+    guild = bot.get_guild(payload.guild_id)
+    rolesDict = {role.name : role for role in guild.roles}
+    member = guild.get_member(payload.user_id)
+    user = bot.get_user(payload.user_id)
+    if(payload.message_id == 769172891702263828):
         if(str(payload.emoji) == "✅"):
-            for channelID in channels:
+            for channelID in [IDs.get("matkanalen"), IDs.get("grogghörnan")]:
                 channel = bot.get_channel(channelID)
-                await channel.set_permissions(member, read_messages=True, send_messages=True, manage_messages=True, embed_links=True, attach_files=True, mention_everyone=True, add_reactions=True)
-                
+                await channel.set_permissions(user, read_messages=True, send_messages=True, manage_messages=True, embed_links=True, attach_files=True, mention_everyone=True, add_reactions=True) 
         else:
             channel = bot.get_channel(payload.channel_id)
             async for elem in channel.history():
                 await elem.remove_reaction(payload.emoji,member)
+    elif(payload.message_id == 769218692948295721):
+        for roleName in ["Köpstopp", "GH", "Familjen"]:
+            await member.remove_roles(rolesDict.get(roleName))
+            
+        if(str(payload.emoji) == "\U0001F986"):
+            role = rolesDict.get("Köpstopp")
+            await member.add_roles(role)
+        elif(str(payload.emoji) == "🐦"):
+            role = rolesDict.get("GH")
+            await member.add_roles(role)
+        elif(str(payload.emoji) == "👪"):
+            role = rolesDict.get("Familjen")
+            await member.add_roles(role)
+
+@bot.command()
+async def info_message_kopstopp(ctx):
+    member = ctx.message.author
+    if isAdmin(member):
+        channel = bot.get_channel(IDs.get("köpstopp"))
+        await channel.send(messages["info_message_köpstopp"]["message"])
+
 
 @bot.command()
 async def pi(ctx, *, args):
@@ -271,15 +321,24 @@ async def pi(ctx, *, args):
             await channel.send(f"Disk: {disk_usage}%")
         elif args == "all":
             cpu = CPUTemperature()
+            cpu_temp = round(cpu.temperature)
             load = LoadAverage()
             load_avg = round(load.load_average*100)
             disk = DiskUsage()
             disk_usage = round(disk.usage)
-            await channel.send(f"Temp: {cpu.temperature}°C \nLoad: {load_avg}% \nDisk: {disk_usage}%")
+            await channel.send(f"Temp: {cpu_temp}°C \nLoad: {load_avg}% \nDisk: {disk_usage}%")
         else:
             await channel.send(f"Jag förstår inte argumentet: {args} \n Jag kan följande: [temp, load, disk, all]")
     else:
         await ctx.channel.send("Endast individer av exceptionell rank har tillgång till denna funktion!")
+
+@bot.command()
+async def snapsvisa(ctx):
+    with open('snapsvisor.json', encoding='utf-8') as f:
+        data = json.load(f)
+        songs = data["snapsvisor"]["visor"]
+        random_song = randint(0, len(songs)-1)
+    await ctx.channel.send(songs[random_song]["visa"])
 
 #--------- TO START MASTER BOT --------------
 if(platform.uname()[1]=="raspberrypi" or platform.uname()[1]=="pi4-arch"):
