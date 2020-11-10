@@ -55,7 +55,7 @@ IDs = {"serverID":467039975276281856, \
 isLocal = True
 botVersion = 0.00
 
-with open("/home/kj/wolfram.key",encoding='utf-8',mode="r") as key:
+with open("/var/lib/jenkins/wolfram.key",encoding='utf-8',mode="r") as key:
     wolframKey = key.read()
 
 
