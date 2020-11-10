@@ -1,5 +1,9 @@
 #!/usr/bin/env python
-
+from PIL import Image, ImageDraw, ImageFont
+import io
+import os
+import aiohttp
+from io import BytesIO
 import discord
 import platform
 import base64
@@ -9,10 +13,17 @@ import sys
 import asyncio
 from itertools import cycle
 import json
+<<<<<<< HEAD
+import wolframalpha
+import random
+import requests
+import pathlib
+=======
 from gpiozero import CPUTemperature, LoadAverage, DiskUsage
 import http.client, urllib.request, urllib.parse, urllib.error, base64
 import os
 from random import randint
+>>>>>>> d22f340fd3fbae058b7b745490f650cdf591882d
 
 if platform.uname()[4] == "aarch64":
     import os
@@ -22,6 +33,14 @@ if platform.uname()[4] == "aarch64":
 encryptedKeys = {"live": "\r\x03I<?\x12\x01\t\x1e2)sk2\\\r&7'n5&S\x18\\91#X\x1e\x1f x\x14%Y/\x0eDo<jG+\x05a6\x07\x08\x08Yz\x08\x00w1\x08\x02\x0c\x0c\x03\x01u\x0c^#4@=\r/n!\x1a<\x157[7\x0e\x04x",
                 "local": "\r\x03I<?\x02\x05N\x1e>\x07ro5\x01\n&6\x05n6\x18[{d95=k4\x0f x\x14%Y(n;7<jG\x0c5p.\x17?&{C;\x17{D\x00ezN\x1e<\x1fvP5/}$k\r}\x1a\x05\x1a\x1c7^\x11 \x04x"}
 
+<<<<<<< HEAD
+askTureMessages =["Hmm... den var klurig. Jag ska kolla upp detta i boken!","Kunskap är makt! Nu tar vi över världen. Vänta lite bara...",
+                "Jaha är du här och stör igen... Ja jag får väl kolla up det då.","Jag är stadsingenjör, jag kan en del saker. Vänta ska du få se!"]
+askTureInfoNotFoundMessages =["Ajaj Hasse detta hittade jag inget om i boken! Bättre lycka nästa gång.","Den där nedrans eremiten har tagit tillbaka boken, du får klara dig själv.",
+                "Rackarns bananer nu är det jag som får skämmas. Här står ingenting om din fråga.", "Vad förväntar du dig av mig!? Jag är bara en sketen bot skriven av några imbeciller."]
+
+IDs = {"serverID":467039975276281856, "ture-har-ordet":729990369525235772, "vmguld-i-skitsnack":467039975276281858, "bot-testing":768443897352683530}
+=======
 IDs = {"serverID":467039975276281856, \
         "ture-har-ordet":729990369525235772, \
         "vmguld-i-skitsnack":467039975276281858, \
@@ -35,9 +54,14 @@ IDs = {"serverID":467039975276281856, \
         "role_GH":735083349097316352, \
         "role_Familjen":763487940667244565, \
         "role_ByggareBob":763487940667244565}
+>>>>>>> d22f340fd3fbae058b7b745490f650cdf591882d
 
 isLocal = True
 botVersion = 0.00
+
+with open("/home/kj/wolfram.key",encoding='utf-8',mode="r") as key:
+    wolframKey = key.read()
+
 
 with open('messages.json', encoding='utf-8') as json_data:
     messages = json.load(json_data)
@@ -82,6 +106,76 @@ async def on_ready():
     channel = bot.get_channel(IDs.get("ture-har-ordet"))
     if(isLocal == False):
         await channel.send(f"Jag har återvänt till staden, min senaste ritning av den nya bron finner du här: <https://github.com/AndreasH96/Discord-bot-ture/commit/{bot_version}>")
+
+@bot.command()
+async def askTure(ctx , *, arg):
+
+    # init client
+    client = wolframalpha.Client(wolframKey)
+    
+    # send first message to user
+    await ctx.channel.send(askTureMessages[random.randint(0,len(askTureMessages)-1)])
+    
+    # query wolfram alpha
+    result = client.query(arg) 
+    # get the main pod of data
+    resultPods = result.get("pod")
+    message = []
+    titleAmount = 0
+    images = []
+    try: 
+        # for each pod add pod title and images from its sub pods
+        for pod in resultPods:
+            message.append(pod.get("@title"))
+            titleAmount +=1
+            subpod = pod.get("subpod")
+            if(type(subpod) == list):
+                for childpod in subpod:
+                    response = requests.get(childpod.get("img").get("@src"))
+                    img= Image.open(BytesIO(response.content))
+                    images.append(img)
+                    message.append(img)
+            elif (type(subpod) == dict):
+                response = requests.get(subpod.get("img").get("@src"))
+                img= Image.open(BytesIO(response.content))
+                images.append(img)
+                message.append(img)
+
+        # adjust final image height and width
+        widths,heights = zip(*(i.size for i in images))
+        totalHeight = sum(heights) + titleAmount * 18
+        maxWidth = max(widths)
+        newImage = Image.new('RGB',(maxWidth,totalHeight),color="white")
+        yOffset = 0 
+        imageDraw = ImageDraw.Draw(newImage)
+        # Create font and add titles to final images
+        font = ImageFont.truetype("Verdana.ttf",14)
+        for field in message:
+            if type(field) == str:
+                imageDraw.text((5,yOffset),field,font=font,fill="black")
+                yOffset +=18
+            else :
+                newImage.paste(field,(0,yOffset))
+                yOffset += field.size[1]
+        
+        # create temp file name 
+        tempFileName = "{}.png".format(random.randint(1,10000))
+        # save temp file
+        newImage.save(tempFileName,'PNG')
+        imagePath = "{}/{}".format(str(pathlib.Path().absolute()),tempFileName)
+        # create embed and set file & image
+        embed = discord.Embed(title="Här har du, lämna mig ifred nu", color=0x00ff00) #creates embed
+        f = discord.File(imagePath, filename=tempFileName)
+        embed.set_image(url="attachment://{}".format(tempFileName))
+        
+        # send image and remove temp file
+        await ctx.send(file=f, embed=embed)
+        os.remove(imagePath)
+
+    except:
+         await ctx.channel.send(askTureInfoNotFoundMessages[random.randint(0,len(askTureInfoNotFoundMessages)-1)])
+
+
 
 @bot.command()
 async def boken(ctx):
