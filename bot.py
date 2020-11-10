@@ -57,6 +57,7 @@ botVersion = 0.00
 
 with open("/var/lib/jenkins/wolfram.key",encoding='utf-8',mode="r") as key:
     wolframKey = key.read()
+    wolframKey = wolframKey.replace("\n", "")
 
 
 with open('messages.json', encoding='utf-8') as json_data:
