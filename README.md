@@ -12,6 +12,7 @@ En bot till kvasiföreningen Köpstopps egna Discord.
 | !drinking_game | Ture berättar reglerna för Skrotnisse Drinking-game. |
 | !skrotnisse x | Ture skickar länken till det avsnitt av Skrotnisse du ber om. |
 | !snapsvisa | Ture ger dig en slumpvald snapsvisa, skål! |
+| !askTure | Ställ en valfri fråga till Ture |
 | | Följande är admin kommandon. |
 | !pi [temp, load, disk, all] | Retunerar respektive status. |
 | !info_message_food | Skriver reglerna i matkanalen |
