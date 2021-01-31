@@ -54,9 +54,9 @@ IDs = {"serverID":467039975276281856, \
 
 isLocal = True
 botVersion = 0.00
+server_username = "b0594eb1c1ad"
 
-
-if(platform.uname()[1]=="pi4-arch"):
+if(platform.uname()[1]==server_username):
     wolfram_key_path = "/root/.jenkins/wolfram.key"
 else:
     wolfram_key_path = "wolfram.key"
@@ -98,7 +98,7 @@ async def isAdmin(member):
 intents = discord.Intents.default()  # All but the two privileged ones
 intents.members = True
 
-if(platform.uname()[1]=="raspberrypi" or platform.uname()[1]=="pi4-arch"):
+if(platform.uname()[1]==server_username):
     bot = commands.Bot(command_prefix="!", status=discord.Status.idle, activity=discord.Game(name="Arga ubåtsljud intesifieras..."), intents=intents)
 else:
     bot = commands.Bot(command_prefix="l:", status=discord.Status.idle, activity=discord.Game(name="Arga ubåtsljud intesifieras..."), intents=intents)
@@ -348,7 +348,7 @@ async def snapsvisa(ctx):
     await ctx.channel.send(songs[random_song]["visa"])
 
 #--------- TO START MASTER BOT --------------
-if(platform.uname()[1]=="raspberrypi" or platform.uname()[1]=="pi4-arch"):
+if(platform.uname()[1]==server_username):
     bot_version = sys.argv[2]
     isLocal = False
     try:
