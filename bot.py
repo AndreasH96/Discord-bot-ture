@@ -57,7 +57,7 @@ botVersion = 0.00
 
 
 if(platform.uname()[1]=="pi4-arch"):
-    wolfram_key_path = "/root/.jenkins/"
+    wolfram_key_path = "/root/.jenkins/wolfram.key"
 else:
     wolfram_key_path = "wolfram.key"
 
