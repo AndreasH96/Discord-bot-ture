@@ -55,9 +55,18 @@ IDs = {"serverID":467039975276281856, \
 isLocal = True
 botVersion = 0.00
 
-with open("/var/lib/jenkins/wolfram.key",encoding='utf-8',mode="r") as key:
-    wolframKey = key.read()
-    wolframKey = wolframKey.replace("\n", "")
+
+if(platform.uname()[1]=="pi4-arch"):
+    wolfram_key_path = "/root/.jenkins/"
+else:
+    wolfram_key_path = "wolfram.key"
+
+try:
+    with open(wolfram_key_path, encoding='utf-8',mode="r") as key:
+        wolframKey = key.read()
+        wolframKey = wolframKey.replace("\n", "")
+except:
+    print("Wolfram API Key not found")
 
 
 with open('messages.json', encoding='utf-8') as json_data:
