@@ -67,6 +67,7 @@ try:
         wolframKey = wolframKey.replace("\n", "")
 except:
     print("Wolfram API Key not found")
+    print(platform.uname()[1])
 
 
 with open('messages.json', encoding='utf-8') as json_data:
