@@ -8,7 +8,7 @@ gpiozero==1.5.1
 idna==2.10
 multidict==4.7.6
 yarl==1.5.1
-pillow==7.2.0
+pillow==9.3.0
 wolframalpha==4.0.0
 pathlib==1.0.1
 requests==2.24.0
